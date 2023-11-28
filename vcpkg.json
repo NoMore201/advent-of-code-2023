@@ -1,0 +1,27 @@
+{
+  "name": "test-vcpkg-template",
+  "version-semver": "0.1.0",
+  "dependencies": [
+    {
+      "name": "fmt",
+      "version>=": "10.1.0"
+    },
+    {
+      "name": "ms-gsl",
+      "version>=": "4.0.0"
+    }
+  ],
+  "default-features": [],
+  "features": {
+    "test": {
+      "description": "Dependencies for testing",
+      "dependencies": [
+        {
+          "name": "gtest",
+          "version>=": "1.14.0"
+        }
+      ]
+    }
+  },
+  "builtin-baseline": "01acfdfde3ed99280d3883a8fccd5fa4408f5214"
+}

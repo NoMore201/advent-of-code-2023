@@ -1,0 +1,25 @@
+matrix:
+  include:
+  - C_COMPILER: gcc
+    CXX_COMPILER: g++
+  - C_COMPILER: clang
+    CXX_COMPILER: clang++
+
+steps:
+  build:
+    image: cpp-dev-env:0.2
+    commands:
+    - cmake --preset ci-debian
+    - cmake --build build/ci
+    environment:
+    - CC=${C_COMPILER}
+    - CXX=${CXX_COMPILER}
+  test:
+    image: cpp-dev-env:0.2
+    commands:
+    - cd build/ci
+    - ctest --output-on-failure --no-compress-output
+
+when:
+  event: push
+  branch: main
