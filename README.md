@@ -1,5 +1,7 @@
 # Advent of code 2023
 
+![ci-status](https://github.com/NoMore201/advent-of-code-2023/actions/workflows/ci.yml/badge.svg)
+
 My attempt at solving advent of code 2023 challenges with modern C++.
 
 This repository is based on a template generated with the awesome
