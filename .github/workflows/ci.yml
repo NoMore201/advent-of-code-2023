@@ -31,7 +31,7 @@ jobs:
       run: cmake --preset ci-debian
 
     - name: Build
-      run: cmake --build build --config Release -j 2 build/ci
+      run: cmake --build build/ci --config Release -j 2
 
     - name: Test
       working-directory: build/ci
