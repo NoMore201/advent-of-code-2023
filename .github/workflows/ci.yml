@@ -11,10 +11,6 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        compiler: [g++, clang++]
-
     env:
       VCPKG_ROOT: /tmp/vcpkg
 
@@ -25,14 +21,14 @@ jobs:
 
     - name: Install dependencies
       run: >-
-        sudo apt-get install clang-tidy-15 cppcheck gcc clang-15 git curl zip unzip tar -y -q
+        sudo apt-get install clang-tidy-15 cppcheck gcc git curl zip unzip tar -y -q
 
         sudo update-alternatives --install
         /usr/bin/clang-tidy clang-tidy
         /usr/bin/clang-tidy-15 150
         
-        git clone https://github.com/microsoft/vcpkg ${VCPKG_ROOT}
-        ${VCPKG_ROOT}/bootstrap-vcpkg.sh -disableMetrics
+        git clone https://github.com/microsoft/vcpkg $VCPKG_ROOT
+        $VCPKG_ROOT/bootstrap-vcpkg.sh -disableMetrics
 
     - name: Configure
       run: cmake --preset ci-debian
