@@ -23,8 +23,8 @@ jobs:
       run: >-
         sudo apt-get install clang-tidy-15 cppcheck gcc-12 git curl zip unzip tar -y -q
         
-        git clone https://github.com/microsoft/vcpkg $VCPKG_ROOT
-        $VCPKG_ROOT/bootstrap-vcpkg.sh -disableMetrics
+        git clone https://github.com/microsoft/vcpkg {{ env.VCPKG_ROOT }}
+        {{ env.VCPKG_ROOT }}/bootstrap-vcpkg.sh -disableMetrics
 
     - name: Configure
       run: cmake --preset ci-debian
