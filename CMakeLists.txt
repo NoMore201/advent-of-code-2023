@@ -19,6 +19,7 @@ add_library(
   aoc_lib
   OBJECT
   source/step1.cpp
+  source/utils.cpp
 )
 
 target_include_directories(
