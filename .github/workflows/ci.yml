@@ -22,8 +22,6 @@ jobs:
     - name: Install dependencies
       run: >-
         sudo apt-get install clang-tidy-15 cppcheck gcc git curl zip unzip tar -y -q
-
-        ln -s /usr/bin/clang-tidy-15 /usr/bin/clang-tidy
         
         git clone https://github.com/microsoft/vcpkg $VCPKG_ROOT
         $VCPKG_ROOT/bootstrap-vcpkg.sh -disableMetrics
