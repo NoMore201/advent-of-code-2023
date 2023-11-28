@@ -11,20 +11,21 @@ on:
 
 jobs:
   build:
+    runs-on: ubuntu-22.04
+
     env:
       VCPKG_ROOT: /tmp/vcpkg
-
-    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v3
 
     - name: Install dependencies
       run: >-
-        sudo apt-get install clang-tidy-15 cppcheck gcc-12 git curl zip unzip tar -y -q
+        sudo apt-get install clang-tidy-15 cppcheck gcc-12 g++-12 git curl zip unzip tar -y -q
+        echo $VCPKG_ROOT
         
-        git clone https://github.com/microsoft/vcpkg {{ env.VCPKG_ROOT }}
-        {{ env.VCPKG_ROOT }}/bootstrap-vcpkg.sh -disableMetrics
+        git clone https://github.com/microsoft/vcpkg /tmp/vcpkg
+        /tmp/vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
     - name: Configure
       run: cmake --preset ci-debian
