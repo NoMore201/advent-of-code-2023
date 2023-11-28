@@ -1,6 +1,6 @@
 #include "utils.hpp"
 
-std::vector<std::string_view> AdventOfCode::split(const std::string_view str, char delim) {
+AdventOfCode::StringViewList AdventOfCode::split(const std::string_view str, char delim) {
     using Iterator = std::string_view::const_iterator;
     std::vector<std::string_view> result{};
     Iterator begin = str.begin();

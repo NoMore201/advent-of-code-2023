@@ -1,5 +1,7 @@
 #pragma once
 
+#include "types.hpp"
+
 #include <algorithm>
 #include <charconv>
 #include <iterator>
@@ -24,7 +26,7 @@ std::set<T> find_common_items(FirstIt first_begin, FirstIt first_end, SecondIt s
     return result;
 }
 
-std::vector<std::string_view> split(std::string_view str, char delim);
+StringViewList split(std::string_view str, char delim);
 
 void from_chars_wrapper(const std::string_view str, auto &value) {
     auto result = std::from_chars(str.data(), str.data() + str.size(), value);
