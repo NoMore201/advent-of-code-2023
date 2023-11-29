@@ -8,7 +8,7 @@
 
 namespace {} // anonymous namespace
 
-TEST(AoC, FindCommonItems) {
+TEST(AdventOfCode, FindCommonItems) {
     using AoC::find_common_items;
     using AoC::range_to_set;
 
@@ -34,7 +34,7 @@ TEST(AoC, FindCommonItems) {
     EXPECT_FALSE(common_dates.contains(2023));
 }
 
-TEST(AoC, StringSplit) {
+TEST(AdventOfCode, StringSplit) {
     constexpr std::string_view input{"c++11,c++14,c++17,c++20,"};
 
     const auto split_by_comma = AoC::split(input, ',');
