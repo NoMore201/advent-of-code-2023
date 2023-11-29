@@ -9,9 +9,13 @@
 namespace {} // anonymous namespace
 
 TEST(AdventOfCode, FindCommonItems) {
+    using AdventOfCode::find_common_items;
+    using AdventOfCode::range_to_set;
+
     constexpr std::string_view first{"abcde"};
     constexpr std::string_view second{"abcgh"};
-    const auto common_items = AdventOfCode::find_common_items<char>(first.begin(), first.end(), second.begin(), second.end());
+    auto common_items_range = find_common_items(first, second);
+    auto common_items = range_to_set<char>(common_items_range);
     EXPECT_EQ(common_items.size(), 3);
     EXPECT_TRUE(common_items.contains('a'));
     EXPECT_TRUE(common_items.contains('b'));
@@ -21,7 +25,8 @@ TEST(AdventOfCode, FindCommonItems) {
     std::vector<int> dates_second(12);
     std::iota(dates_second.begin(), dates_second.end(), 1990);
 
-    const auto common_dates = AdventOfCode::find_common_items<int>(dates_first.begin(), dates_first.end(), dates_second.begin(), dates_second.end());
+    auto common_dates_range = find_common_items(dates_first, dates_second);
+    auto common_dates = range_to_set<int>(common_dates_range);
     EXPECT_EQ(common_dates.size(), 2);
     EXPECT_TRUE(common_dates.contains(1992));
     EXPECT_TRUE(common_dates.contains(2000));
