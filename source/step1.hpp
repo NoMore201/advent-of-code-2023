@@ -6,10 +6,10 @@
 
 #include <string_view>
 
-namespace AdventOfCode {
+namespace AoC {
 
 int step1_solution_part1(std::string_view input);
 
 int step1_solution_part2(std::string_view input);
 
-} // namespace AdventOfCode
+} // namespace AoC

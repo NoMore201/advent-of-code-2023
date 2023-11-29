@@ -12,7 +12,7 @@
 #include <string_view>
 #include <vector>
 
-namespace AdventOfCode {
+namespace AoC {
 
 auto find_common_items(std::ranges::forward_range auto &first, std::ranges::forward_range auto &second) {
     return first | std::views::filter([&second](auto item) {
@@ -45,4 +45,4 @@ template <typename T> std::stack<T> reverse_stack(std::stack<T> &original) {
     return reversed;
 }
 
-} // namespace AdventOfCode
+} // namespace AoC

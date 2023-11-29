@@ -8,9 +8,9 @@
 
 namespace {} // anonymous namespace
 
-TEST(AdventOfCode, FindCommonItems) {
-    using AdventOfCode::find_common_items;
-    using AdventOfCode::range_to_set;
+TEST(AoC, FindCommonItems) {
+    using AoC::find_common_items;
+    using AoC::range_to_set;
 
     constexpr std::string_view first{"abcde"};
     constexpr std::string_view second{"abcgh"};
@@ -34,10 +34,10 @@ TEST(AdventOfCode, FindCommonItems) {
     EXPECT_FALSE(common_dates.contains(2023));
 }
 
-TEST(AdventOfCode, StringSplit) {
+TEST(AoC, StringSplit) {
     constexpr std::string_view input{"c++11,c++14,c++17,c++20,"};
 
-    const auto split_by_comma = AdventOfCode::split(input, ',');
+    const auto split_by_comma = AoC::split(input, ',');
 
     EXPECT_EQ(split_by_comma.size(), 5);
     EXPECT_EQ(split_by_comma[0], "c++11");
