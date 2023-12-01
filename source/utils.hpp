@@ -5,27 +5,26 @@
 #include <algorithm>
 #include <charconv>
 #include <iterator>
+#include <ranges>
 #include <set>
 #include <stack>
 #include <stdexcept>
 #include <string_view>
 #include <vector>
 
-namespace AdventOfCode {
+namespace AoC {
 
-template <typename T, typename FirstIt, typename SecondIt>
-    requires std::forward_iterator<FirstIt> && std::forward_iterator<SecondIt>
-std::set<T> find_common_items(FirstIt first_begin, FirstIt first_end, SecondIt second_begin,
-                              SecondIt second_end) {
-    std::set<T> result{};
-    std::for_each(first_begin, first_end, [second_begin, second_end, &result](T item) {
-        if (std::find(second_begin, second_end, item) != second_end) {
-            result.insert(item);
-        }
+auto find_common_items(std::ranges::forward_range auto &first, std::ranges::forward_range auto &second) {
+    return first | std::views::filter([&second](auto item) {
+        return std::find(second.begin(), second.end(), item) != second.end();
     });
-    return result;
 }
 
+template <typename T> std::set<T> range_to_set(std::ranges::forward_range auto &rng) {
+    return std::set<T>(rng.begin(), rng.end());
+}
+
+// TODO: make generic?
 StringViewList split(std::string_view str, char delim);
 
 void from_chars_wrapper(const std::string_view str, auto &value) {
@@ -46,4 +45,4 @@ template <typename T> std::stack<T> reverse_stack(std::stack<T> &original) {
     return reversed;
 }
 
-} // namespace AdventOfCode
+} // namespace AoC
