@@ -1014,5 +1014,5 @@ TEST(AdventOfCode, Step1Part1) {
 }
 
 TEST(AdventOfCode, Step1Part2) {
-    EXPECT_EQ(198041, AdventOfCode::step1_solution_part2(exercise_input));
+    EXPECT_EQ(54875, AdventOfCode::step1_solution_part2(exercise_input));
 }
