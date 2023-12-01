@@ -1010,9 +1010,9 @@ constexpr std::string_view exercise_input{
 } // anonymous namespace
 
 TEST(AdventOfCode, Step1Part1) {
-    EXPECT_EQ(55538, AdventOfCode::step1_solution_part1(exercise_input));
+    EXPECT_EQ(55538, AoC::step1_solution_part1(exercise_input));
 }
 
 TEST(AdventOfCode, Step1Part2) {
-    EXPECT_EQ(54875, AdventOfCode::step1_solution_part2(exercise_input));
+    EXPECT_EQ(54875, AoC::step1_solution_part2(exercise_input));
 }

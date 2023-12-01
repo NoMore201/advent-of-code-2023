@@ -25,7 +25,7 @@ int parse_number_from_digits(std::string_view line) {
     final_number.push_back(*last_number_it);
 
     int result{};
-    AdventOfCode::from_chars_wrapper(final_number, result);
+    AoC::from_chars_wrapper(final_number, result);
     return result;
 }
 
@@ -43,14 +43,14 @@ constexpr auto not_found_index = std::string_view::npos;
 std::optional<int> get_first_match(std::string_view line) {
     auto left_most_index{not_found_index};
     auto result{0};
-    for (const auto [str, value] : word_map) {
+    for (const auto& [str, value] : word_map) {
         const auto index = line.find(str);
         if (index != not_found_index && index < left_most_index) {
             left_most_index = index;
             result = value;
         }
     }
-    for (const auto [character, value] : digit_map) {
+    for (const auto& [character, value] : digit_map) {
         const auto index = line.find(character);
         if (index != not_found_index && index < left_most_index) {
             left_most_index = index;
@@ -68,7 +68,7 @@ std::optional<int> get_last_match(std::string_view line) {
     auto right_most_index{0ULL};
     auto result{0};
     bool found_at_least_one{false};
-    for (const auto [str, value] : word_map) {
+    for (const auto& [str, value] : word_map) {
         const auto index = line.rfind(str);
         if (index != not_found_index && index >= right_most_index) {
             found_at_least_one = true;
@@ -76,7 +76,7 @@ std::optional<int> get_last_match(std::string_view line) {
             result = value;
         }
     }
-    for (const auto [character, value] : digit_map) {
+    for (const auto& [character, value] : digit_map) {
         const auto index = line.rfind(character);
         if (index != not_found_index && index >= right_most_index) {
             found_at_least_one = true;
@@ -107,7 +107,7 @@ int parse_number_from_words(std::string_view line) {
 
 } // anonymous namespace
 
-int AdventOfCode::step1_solution_part1(std::string_view input) {
+int AoC::step1_solution_part1(std::string_view input) {
     const auto lines = split(input, '\n');
 
     return std::accumulate(lines.begin(), lines.end(), 0, [](int sum, std::string_view line) {
@@ -115,7 +115,7 @@ int AdventOfCode::step1_solution_part1(std::string_view input) {
     });
 }
 
-int AdventOfCode::step1_solution_part2(std::string_view input) {
+int AoC::step1_solution_part2(std::string_view input) {
     const auto lines = split(input, '\n');
 
     return std::accumulate(lines.begin(), lines.end(), 0, [](int sum, std::string_view line) {
