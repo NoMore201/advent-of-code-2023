@@ -18,7 +18,7 @@ include(cmake/variables.cmake)
 add_library(
   aoc_lib
   OBJECT
-  source/step1.cpp
+  source/day1.cpp
   source/utils.cpp
   source/day2.hpp
   source/day2.cpp

@@ -8,8 +8,8 @@
 
 namespace AoC {
 
-int step1_solution_part1(std::string_view input);
+int day1_solution_part1(std::string_view input);
 
-int step1_solution_part2(std::string_view input);
+int day1_solution_part2(std::string_view input);
 
 } // namespace AoC

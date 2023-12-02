@@ -1,7 +1,5 @@
 #pragma once
 
-#include "types.hpp"
-
 #include <algorithm>
 #include <charconv>
 #include <iterator>
@@ -25,7 +23,7 @@ template <typename T> std::set<T> range_to_set(std::ranges::forward_range auto &
 }
 
 // TODO: make generic?
-StringViewList split(std::string_view str, char delim);
+std::vector<std::string_view> split(std::string_view str, char delim);
 
 void from_chars_wrapper(const std::string_view str, auto &value) {
     auto result = std::from_chars(str.data(), str.data() + str.size(), value);

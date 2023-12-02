@@ -1,6 +1,6 @@
 #include "utils.hpp"
 
-AoC::StringViewList AoC::split(const std::string_view str, char delim) {
+std::vector<std::string_view> AoC::split(const std::string_view str, char delim) {
     using Iterator = std::string_view::const_iterator;
     std::vector<std::string_view> result{};
     Iterator begin = str.begin();
