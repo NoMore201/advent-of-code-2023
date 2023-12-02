@@ -8,7 +8,7 @@
 
 namespace {} // anonymous namespace
 
-TEST(AdventOfCode, FindCommonItems) {
+TEST(Utils, FindCommonItems) {
     using AoC::find_common_items;
     using AoC::range_to_set;
 
@@ -34,7 +34,7 @@ TEST(AdventOfCode, FindCommonItems) {
     EXPECT_FALSE(common_dates.contains(2023));
 }
 
-TEST(AdventOfCode, StringSplit) {
+TEST(Utils, StringSplit) {
     constexpr std::string_view input{"c++11,c++14,c++17,c++20,"};
 
     const auto split_by_comma = AoC::split(input, ',');
@@ -45,4 +45,16 @@ TEST(AdventOfCode, StringSplit) {
     EXPECT_EQ(split_by_comma[2], "c++17");
     EXPECT_EQ(split_by_comma[3], "c++20");
     EXPECT_EQ(split_by_comma[4], std::string_view{});
+}
+
+TEST(Utils, FromCharsWrapper) {
+    constexpr std::string_view input_int{"4096"};
+    int parsed_number{};
+    AoC::from_chars_wrapper(input_int, parsed_number);
+    EXPECT_EQ(parsed_number, 4096);
+    parsed_number = 0;
+    AoC::from_chars_wrapper(input_int.begin(), input_int.end(), parsed_number);
+    EXPECT_EQ(parsed_number, 4096);
+    constexpr std::string_view invalid_input{"fake12mixed34"};
+    EXPECT_ANY_THROW(AoC::from_chars_wrapper(invalid_input, parsed_number));
 }

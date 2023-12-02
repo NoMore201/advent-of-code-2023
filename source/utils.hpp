@@ -25,11 +25,18 @@ template <typename T> std::set<T> range_to_set(std::ranges::forward_range auto &
 // TODO: make generic?
 std::vector<std::string_view> split(std::string_view str, char delim);
 
-void from_chars_wrapper(const std::string_view str, auto &value) {
-    auto result = std::from_chars(str.data(), str.data() + str.size(), value);
+void from_chars_wrapper(std::basic_string_view<char>::iterator begin,
+                        std::basic_string_view<char>::iterator end, auto &value) {
+    const auto *begin_ptr = &*begin;
+    const auto length = std::distance(begin, end);
+    auto result = std::from_chars(begin_ptr, begin_ptr + length, value);
     if (result.ec != std::errc()) {
         throw std::runtime_error("Error while parsing value from string");
     }
+}
+
+void from_chars_wrapper(std::string_view str, auto &value) {
+    from_chars_wrapper(str.begin(), str.end(), value);
 }
 
 template <typename T> std::stack<T> reverse_stack(std::stack<T> &original) {

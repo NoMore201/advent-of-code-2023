@@ -49,7 +49,7 @@ public:
                     throw std::runtime_error("Malformed input string");
                 }
                 int color_quantity{};
-                AoC::from_chars_wrapper(std::string_view{it, next_space_it}, color_quantity);
+                AoC::from_chars_wrapper(it, next_space_it, color_quantity);
                 // parse color
                 it = next_space_it + 1;
                 auto color = parse_color_from_string(it, line.end());
