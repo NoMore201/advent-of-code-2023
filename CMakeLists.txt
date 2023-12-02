@@ -22,6 +22,7 @@ add_library(
   source/utils.cpp
   source/day2.hpp
   source/day2.cpp
+  source/day3.cpp
 )
 
 target_include_directories(
