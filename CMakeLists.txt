@@ -20,6 +20,8 @@ add_library(
   OBJECT
   source/step1.cpp
   source/utils.cpp
+  source/day2.hpp
+  source/day2.cpp
 )
 
 target_include_directories(

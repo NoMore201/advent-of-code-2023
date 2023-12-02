@@ -18,8 +18,9 @@ endif ()
 
 add_executable(
   aoc_test
-  source/advent_tests_step1.cpp
+  source/advent_tests_day1.cpp
   source/advent_tests_utils.cpp
+  source/advent_tests_day2.cpp
 )
 target_link_libraries(
   aoc_test PRIVATE
