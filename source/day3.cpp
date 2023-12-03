@@ -43,7 +43,7 @@ bool is_symbol(char item) { return item != '.' && std::ispunct(item) != 0; }
 
 Matrix create_matrix(std::string_view input) {
     Matrix matrix{};
-    const auto lines = AoC::split(input, '\n');
+    const auto lines = Utils::split(input, '\n');
     for (const auto &line : lines) {
         matrix.emplace_back(line.begin(), line.end());
     }
@@ -100,7 +100,7 @@ std::vector<std::size_t> find_adjacent_numbers(const Matrix &matrix, std::size_t
     auto findings = find_numbers_in_string(matrix[row]);
     for (auto range : findings) {
         if (range.end == column || range.begin == (column + 1)) {
-            const auto gear_ratio = AoC::parse_integer<std::size_t>(matrix[row].begin() + range.begin,
+            const auto gear_ratio = Utils::parse_integer<std::size_t>(matrix[row].begin() + range.begin,
                                                                     matrix[row].begin() + range.end);
             result.push_back(gear_ratio);
         }
@@ -111,7 +111,7 @@ std::vector<std::size_t> find_adjacent_numbers(const Matrix &matrix, std::size_t
         for (auto range : findings) {
             if (range.end == column || range.begin == (column + 1) ||
                 (column >= range.begin && column <= range.end)) {
-                const auto gear_ratio = AoC::parse_integer<std::size_t>(str_ref.begin() + range.begin,
+                const auto gear_ratio = Utils::parse_integer<std::size_t>(str_ref.begin() + range.begin,
                                                                         str_ref.begin() + range.end);
                 result.push_back(gear_ratio);
             }
@@ -123,7 +123,7 @@ std::vector<std::size_t> find_adjacent_numbers(const Matrix &matrix, std::size_t
         for (auto range : findings) {
             if (range.end == column || range.begin == (column + 1) ||
                 (column >= range.begin && column <= range.end)) {
-                const auto gear_ratio = AoC::parse_integer<std::size_t>(str_ref.begin() + range.begin,
+                const auto gear_ratio = Utils::parse_integer<std::size_t>(str_ref.begin() + range.begin,
                                                                         str_ref.begin() + range.end);
                 result.push_back(gear_ratio);
             }
@@ -145,7 +145,7 @@ int AoC::day3_solution_part1(std::string_view input) {
         for (auto range : findings) {
             if (is_part_number(matrix, row_index, range)) {
                 const auto &row_str = matrix[row_index];
-                sum += AoC::parse_integer<int>(row_str.begin() + range.begin, row_str.begin() + range.end);
+                sum += Utils::parse_integer<int>(row_str.begin() + range.begin, row_str.begin() + range.end);
             }
         }
     }

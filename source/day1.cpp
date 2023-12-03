@@ -24,7 +24,7 @@ int parse_number_from_digits(std::string_view line) {
     final_number.push_back(*first_number_it);
     final_number.push_back(*last_number_it);
 
-    return AoC::parse_integer<int>(final_number);
+    return Utils::parse_integer<int>(final_number);
 }
 
 const std::unordered_map<std::string_view, int> word_map{
@@ -106,7 +106,7 @@ int parse_number_from_words(std::string_view line) {
 } // anonymous namespace
 
 int AoC::day1_solution_part1(std::string_view input) {
-    const auto lines = split(input, '\n');
+    const auto lines = Utils::split(input, '\n');
 
     return std::accumulate(lines.begin(), lines.end(), 0, [](int sum, std::string_view line) {
         return sum + parse_number_from_digits(line);
@@ -114,7 +114,7 @@ int AoC::day1_solution_part1(std::string_view input) {
 }
 
 int AoC::day1_solution_part2(std::string_view input) {
-    const auto lines = split(input, '\n');
+    const auto lines = Utils::split(input, '\n');
 
     return std::accumulate(lines.begin(), lines.end(), 0, [](int sum, std::string_view line) {
         return sum + parse_number_from_words(line);

@@ -9,8 +9,8 @@
 namespace {} // anonymous namespace
 
 TEST(Utils, FindCommonItems) {
-    using AoC::find_common_items;
-    using AoC::range_to_set;
+    using Utils::find_common_items;
+    using Utils::range_to_set;
 
     constexpr std::string_view first{"abcde"};
     constexpr std::string_view second{"abcgh"};
@@ -37,7 +37,7 @@ TEST(Utils, FindCommonItems) {
 TEST(Utils, StringSplit) {
     constexpr std::string_view input{"c++11,c++14,c++17,c++20,"};
 
-    const auto split_by_comma = AoC::split(input, ',');
+    const auto split_by_comma = Utils::split(input, ',');
 
     EXPECT_EQ(split_by_comma.size(), 5);
     EXPECT_EQ(split_by_comma[0], "c++11");
@@ -49,10 +49,10 @@ TEST(Utils, StringSplit) {
 
 TEST(Utils, ParseInteger) {
     constexpr std::string_view input_int{"4096"};
-    int parsed_number = AoC::parse_integer<int>(input_int);
+    int parsed_number = Utils::parse_integer<int>(input_int);
     EXPECT_EQ(parsed_number, 4096);
-    parsed_number = AoC::parse_integer<int>(input_int.begin(), input_int.end());
+    parsed_number = Utils::parse_integer<int>(input_int.begin(), input_int.end());
     EXPECT_EQ(parsed_number, 4096);
     constexpr std::string_view invalid_input{"fake12mixed34"};
-    EXPECT_ANY_THROW(AoC::parse_integer<int>(invalid_input));
+    EXPECT_ANY_THROW(Utils::parse_integer<int>(invalid_input));
 }
