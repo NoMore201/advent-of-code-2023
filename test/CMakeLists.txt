@@ -22,6 +22,7 @@ add_executable(
   source/advent_tests_utils.cpp
   source/advent_tests_day2.cpp
   source/advent_tests_day3.cpp
+  source/advent_tests_day4.cpp
 )
 target_link_libraries(
   aoc_test PRIVATE
