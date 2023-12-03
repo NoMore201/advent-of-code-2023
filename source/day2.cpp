@@ -23,9 +23,7 @@ using GameResult = std::vector<RoundCount>;
 int get_game_id(std::string_view line) {
     const auto game_info_string = AoC::split(line, ':')[0];
     const auto id_string = AoC::split(game_info_string, ' ')[1];
-    int result{};
-    AoC::from_chars_wrapper(id_string, result);
-    return result;
+    return AoC::parse_integer<int>(id_string);
 }
 
 class ColorParser {
@@ -48,8 +46,7 @@ public:
                 if (next_space_it == line.end()) {
                     throw std::runtime_error("Malformed input string");
                 }
-                int color_quantity{};
-                AoC::from_chars_wrapper(it, next_space_it, color_quantity);
+                const auto color_quantity = AoC::parse_integer<int>(it, next_space_it);
                 // parse color
                 it = next_space_it + 1;
                 auto color = parse_color_from_string(it, line.end());

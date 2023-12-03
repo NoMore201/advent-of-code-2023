@@ -24,9 +24,7 @@ int parse_number_from_digits(std::string_view line) {
     final_number.push_back(*first_number_it);
     final_number.push_back(*last_number_it);
 
-    int result{};
-    AoC::from_chars_wrapper(final_number, result);
-    return result;
+    return AoC::parse_integer<int>(final_number);
 }
 
 const std::unordered_map<std::string_view, int> word_map{

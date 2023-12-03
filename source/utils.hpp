@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <charconv>
+#include <concepts>
 #include <iterator>
 #include <ranges>
 #include <set>
@@ -22,24 +23,41 @@ template <typename T> std::set<T> range_to_set(std::ranges::forward_range auto &
     return std::set<T>(rng.begin(), rng.end());
 }
 
-// TODO: make generic?
 std::vector<std::string_view> split(std::string_view str, char delim);
 
-void from_chars_wrapper(std::basic_string_view<char>::iterator begin,
-                        std::basic_string_view<char>::iterator end, auto &value) {
+std::vector<std::string_view> split(std::basic_string_view<char>::const_iterator begin,
+                                    std::basic_string_view<char>::const_iterator end, char delim);
+
+template <typename I>
+    requires std::integral<I>
+I parse_integer(std::basic_string_view<char>::const_iterator begin,
+                std::basic_string_view<char>::const_iterator end) {
+    I integer{};
     const auto *begin_ptr = &*begin;
     const auto length = std::distance(begin, end);
-    auto result = std::from_chars(begin_ptr, begin_ptr + length, value);
+
+    auto result = std::from_chars(begin_ptr, begin_ptr + length, integer);
     if (result.ec != std::errc()) {
         throw std::runtime_error("Error while parsing value from string");
     }
+
+    return integer;
 }
 
-void from_chars_wrapper(std::string_view str, auto &value) {
-    from_chars_wrapper(str.begin(), str.end(), value);
+template <typename I>
+    requires std::integral<I>
+I parse_integer(std::string_view str) {
+    return parse_integer<I>(str.begin(), str.end());
+}
+
+template <typename I>
+    requires std::integral<I>
+I parse_integer(std::basic_string<char>::const_iterator begin, std::basic_string<char>::const_iterator end) {
+    return parse_integer<I>(std::string_view{std::move(begin), std::move(end)});
 }
 
 template <typename T> std::stack<T> reverse_stack(std::stack<T> &original) {
+    // TODO: should the original be consumed ?
     std::stack<T> reversed{};
     const auto original_size = original.size();
     for (std::stack<char>::size_type count = 0; count < original_size; count++) {

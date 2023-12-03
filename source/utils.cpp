@@ -16,3 +16,8 @@ std::vector<std::string_view> AoC::split(const std::string_view str, char delim)
 
     return result;
 }
+
+std::vector<std::string_view> AoC::split(std::basic_string_view<char>::const_iterator begin,
+                                         std::basic_string_view<char>::const_iterator end, char delim) {
+    return split(std::string_view{begin, end}, delim);
+}

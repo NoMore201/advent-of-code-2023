@@ -100,10 +100,8 @@ std::vector<std::size_t> find_adjacent_numbers(const Matrix &matrix, std::size_t
     auto findings = find_numbers_in_string(matrix[row]);
     for (auto range : findings) {
         if (range.end == column || range.begin == (column + 1)) {
-            std::size_t gear_ratio{};
-            AoC::from_chars_wrapper(
-                std::string_view{matrix[row].begin() + range.begin, matrix[row].begin() + range.end},
-                gear_ratio);
+            const auto gear_ratio = AoC::parse_integer<std::size_t>(matrix[row].begin() + range.begin,
+                                                                    matrix[row].begin() + range.end);
             result.push_back(gear_ratio);
         }
     }
@@ -113,9 +111,8 @@ std::vector<std::size_t> find_adjacent_numbers(const Matrix &matrix, std::size_t
         for (auto range : findings) {
             if (range.end == column || range.begin == (column + 1) ||
                 (column >= range.begin && column <= range.end)) {
-                std::size_t gear_ratio{};
-                AoC::from_chars_wrapper(
-                    std::string_view{str_ref.begin() + range.begin, str_ref.begin() + range.end}, gear_ratio);
+                const auto gear_ratio = AoC::parse_integer<std::size_t>(str_ref.begin() + range.begin,
+                                                                        str_ref.begin() + range.end);
                 result.push_back(gear_ratio);
             }
         }
@@ -126,9 +123,8 @@ std::vector<std::size_t> find_adjacent_numbers(const Matrix &matrix, std::size_t
         for (auto range : findings) {
             if (range.end == column || range.begin == (column + 1) ||
                 (column >= range.begin && column <= range.end)) {
-                std::size_t gear_ratio{};
-                AoC::from_chars_wrapper(
-                    std::string_view{str_ref.begin() + range.begin, str_ref.begin() + range.end}, gear_ratio);
+                const auto gear_ratio = AoC::parse_integer<std::size_t>(str_ref.begin() + range.begin,
+                                                                        str_ref.begin() + range.end);
                 result.push_back(gear_ratio);
             }
         }
@@ -149,10 +145,7 @@ int AoC::day3_solution_part1(std::string_view input) {
         for (auto range : findings) {
             if (is_part_number(matrix, row_index, range)) {
                 const auto &row_str = matrix[row_index];
-                std::string_view str_view{row_str.begin() + range.begin, row_str.begin() + range.end};
-                int part_number{};
-                AoC::from_chars_wrapper(str_view, part_number);
-                sum += part_number;
+                sum += AoC::parse_integer<int>(row_str.begin() + range.begin, row_str.begin() + range.end);
             }
         }
     }

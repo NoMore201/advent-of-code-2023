@@ -47,14 +47,12 @@ TEST(Utils, StringSplit) {
     EXPECT_EQ(split_by_comma[4], std::string_view{});
 }
 
-TEST(Utils, FromCharsWrapper) {
+TEST(Utils, ParseInteger) {
     constexpr std::string_view input_int{"4096"};
-    int parsed_number{};
-    AoC::from_chars_wrapper(input_int, parsed_number);
+    int parsed_number = AoC::parse_integer<int>(input_int);
     EXPECT_EQ(parsed_number, 4096);
-    parsed_number = 0;
-    AoC::from_chars_wrapper(input_int.begin(), input_int.end(), parsed_number);
+    parsed_number = AoC::parse_integer<int>(input_int.begin(), input_int.end());
     EXPECT_EQ(parsed_number, 4096);
     constexpr std::string_view invalid_input{"fake12mixed34"};
-    EXPECT_ANY_THROW(AoC::from_chars_wrapper(invalid_input, parsed_number));
+    EXPECT_ANY_THROW(AoC::parse_integer<int>(invalid_input));
 }
