@@ -1,5 +1,8 @@
 #include "utils.hpp"
 
+#include <string_view>
+#include <vector>
+
 std::vector<std::string_view> Utils::split(const std::string_view str, char delim) {
     using Iterator = std::string_view::const_iterator;
     std::vector<std::string_view> result{};

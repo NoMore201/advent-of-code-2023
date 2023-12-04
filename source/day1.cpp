@@ -91,13 +91,14 @@ std::optional<int> get_last_match(std::string_view line) {
 }
 
 int parse_number_from_words(std::string_view line) {
+    constexpr int tens_multiplier = 10;
     int result{0};
 
     auto first_match = get_first_match(line);
     auto last_match = get_last_match(line);
 
     Ensures(first_match.has_value() && last_match.has_value());
-    result += *first_match * 10;
+    result += *first_match * tens_multiplier;
     result += *last_match;
 
     return result;

@@ -42,7 +42,7 @@ public:
             if (is_delimiter(*it)) {
                 it += 2; // skip space
                 // parse number
-                auto next_space_it = std::find(it, line.end(), ' ');
+                const auto next_space_it = std::find(it, line.end(), ' ');
                 if (next_space_it == line.end()) {
                     throw std::runtime_error("Malformed input string");
                 }
