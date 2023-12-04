@@ -9,13 +9,10 @@
 namespace {} // anonymous namespace
 
 TEST(Utils, FindCommonItems) {
-    using Utils::find_common_items;
-    using Utils::range_to_set;
 
     constexpr std::string_view first{"abcde"};
     constexpr std::string_view second{"abcgh"};
-    auto common_items_range = find_common_items(first, second);
-    auto common_items = range_to_set<char>(common_items_range);
+    auto common_items = Utils::find_common_items<char>(first, second);
     EXPECT_EQ(common_items.size(), 3);
     EXPECT_TRUE(common_items.contains('a'));
     EXPECT_TRUE(common_items.contains('b'));
@@ -25,8 +22,7 @@ TEST(Utils, FindCommonItems) {
     std::vector<int> dates_second(12);
     std::iota(dates_second.begin(), dates_second.end(), 1990);
 
-    auto common_dates_range = find_common_items(dates_first, dates_second);
-    auto common_dates = range_to_set<int>(common_dates_range);
+    auto common_dates = Utils::find_common_items<int>(dates_first, dates_second);
     EXPECT_EQ(common_dates.size(), 2);
     EXPECT_TRUE(common_dates.contains(1992));
     EXPECT_TRUE(common_dates.contains(2000));

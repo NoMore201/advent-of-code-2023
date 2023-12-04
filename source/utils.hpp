@@ -4,7 +4,7 @@
 #include <charconv>
 #include <concepts>
 #include <iterator>
-#include <ranges>
+#include <optional>
 #include <set>
 #include <stack>
 #include <stdexcept>
@@ -13,14 +13,22 @@
 
 namespace Utils {
 
-auto find_common_items(std::ranges::forward_range auto &first, std::ranges::forward_range auto &second) {
-    return first | std::views::filter([&second](auto item) {
-        return std::find(second.begin(), second.end(), item) != second.end();
-    });
-}
+template <typename Container>
+concept Iterable = requires (Container a){
+    requires std::forward_iterator<typename Container::iterator>;
+    a.begin();
+    a.end();
+};
 
-template <typename T> std::set<T> range_to_set(std::ranges::forward_range auto &rng) {
-    return std::set<T>(rng.begin(), rng.end());
+template <typename T>
+std::set<T> find_common_items(const Iterable auto& first, const Iterable auto& second) {
+    std::set<T> result{};
+    std::for_each(first.begin(), first.end(), [&second, &result](const T& item){
+        if (std::find(second.begin(), second.end(), item) != second.end()) {
+            result.insert(item);
+        }
+    });
+    return result;
 }
 
 template <typename T>

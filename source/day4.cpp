@@ -1,9 +1,7 @@
 #include "day4.hpp"
 #include "utils.hpp"
 
-#include <charconv>
 #include <numeric>
-#include <optional>
 #include <string_view>
 #include <vector>
 
@@ -61,10 +59,9 @@ public:
     const std::vector<int> &get_played() const noexcept { return m_played; }
 
     int get_total_winning_points() const {
-        auto winning_numbers = Utils::find_common_items(m_winning, m_played);
-        const auto size = std::ranges::distance(winning_numbers.begin(), winning_numbers.end());
+        auto winning_numbers = Utils::find_common_items<int>(m_winning, m_played);
 
-        return static_cast<int>(calculate_points(size));
+        return static_cast<int>(calculate_points(winning_numbers.size()));
     }
 };
 
