@@ -1,6 +1,7 @@
 #include "day4.hpp"
 #include "utils.hpp"
 
+#include <map>
 #include <numeric>
 #include <string_view>
 #include <vector>
@@ -22,9 +23,18 @@ constexpr int calculate_points(std::size_t number_of_guess) {
 }
 
 struct ScratchCard {
-    std::vector<int> winning;
-    std::vector<int> played;
+    std::vector<int> winning{};
+    std::vector<int> played{};
+    std::size_t copies{1};
 };
+
+std::size_t parse_card_number(std::string_view line) {
+    const auto sections = Utils::split(line, ':');
+    const auto split_card_label = Utils::split(sections[0], ' ');
+
+    // there may be multiple spaces between "Card" label and the number
+    return Utils::parse_integer<std::size_t>(split_card_label.back());
+}
 
 ScratchCard parse_scratch_card(std::string_view line) {
     ScratchCard card;
@@ -57,10 +67,12 @@ ScratchCard parse_scratch_card(std::string_view line) {
     return card;
 }
 
-int get_total_winning_points(const ScratchCard& card)  {
-    auto winning_numbers = Utils::find_common_items<int>(card.winning, card.played);
+std::size_t get_number_of_winning_entries(const ScratchCard &card) {
+    return Utils::find_common_items<int>(card.winning, card.played).size();
+}
 
-    return calculate_points(winning_numbers.size());
+int get_total_winning_points(const ScratchCard &card) {
+    return calculate_points(get_number_of_winning_entries(card));
 }
 
 } // anonymous namespace
@@ -74,7 +86,26 @@ int AoC::day4_solution_part1(std::string_view input) {
     });
 }
 
-int AoC::day4_solution_part2(std::string_view input) {
-    (void)input;
-    return 0;
+std::size_t AoC::day4_solution_part2(std::string_view input) {
+    const auto lines = Utils::split(input, '\n');
+    std::map<std::size_t, ScratchCard> card_map{};
+
+    for (auto line : lines) {
+        auto card = parse_scratch_card(line);
+        const auto number = parse_card_number(line);
+        card_map.emplace(number, std::move(card));
+    };
+
+    for (const auto &pair : card_map) {
+        const auto number = pair.first;
+        const auto &card = pair.second;
+        const auto winning_entries = get_number_of_winning_entries(card);
+        for (std::size_t current_entry = number + 1; current_entry < number + 1 + winning_entries;
+             current_entry++) {
+            card_map.at(current_entry).copies += card.copies;
+        }
+    };
+
+    return std::accumulate(card_map.begin(), card_map.end(), std::size_t{},
+                           [](std::size_t sum, const auto &pair) { return sum + pair.second.copies; });
 }

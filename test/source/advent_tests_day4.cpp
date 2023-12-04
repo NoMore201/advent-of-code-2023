@@ -234,4 +234,5 @@ TEST(AdventOfCode, Day4Part1) {
 }
 
 TEST(AdventOfCode, Day4Part2) {
+    EXPECT_EQ(6050769, AoC::day4_solution_part2(exercise_input));
 }
