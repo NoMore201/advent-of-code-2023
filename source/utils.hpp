@@ -14,10 +14,10 @@
 namespace Utils {
 
 template <typename Container>
-concept Iterable = requires (Container a){
+concept Iterable = requires (Container container){
     requires std::forward_iterator<typename Container::iterator>;
-    a.begin();
-    a.end();
+    container.begin();
+    container.end();
 };
 
 template <typename T>
@@ -84,7 +84,7 @@ I parse_integer(std::string_view str) {
 template <typename I>
     requires std::integral<I>
 I parse_integer(std::basic_string<char>::const_iterator begin, std::basic_string<char>::const_iterator end) {
-    return parse_integer<I>(std::string_view{std::move(begin), std::move(end)});
+    return parse_integer<I>(std::string_view{begin, end});
 }
 
 template <typename T> std::stack<T> reverse_stack(std::stack<T> &original) {

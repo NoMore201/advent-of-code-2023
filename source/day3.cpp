@@ -62,8 +62,8 @@ bool does_range_contain_symbol(const std::string &row, NumberFinding range) {
 bool is_part_number(const Matrix &matrix, std::size_t row, NumberFinding number_columns) {
     // check same row, item to the left and right
     const auto row_size = matrix[0].size();
-    if (number_columns.begin > 0 && is_symbol(matrix[row][number_columns.begin - 1]) ||
-        number_columns.end < row_size && is_symbol(matrix[row][number_columns.end])) {
+    if ((number_columns.begin > 0 && is_symbol(matrix[row][number_columns.begin - 1])) ||
+        (number_columns.end < row_size && is_symbol(matrix[row][number_columns.end]))) {
         return true;
     }
     // check row before (if any)
