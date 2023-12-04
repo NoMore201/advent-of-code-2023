@@ -21,11 +21,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main" >> /etc/apt/sources.list.d/llvm.list
-        echo "" >> /etc/apt/sources.list.d/llvm.list
-        echo "deb-src http://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main"  >> /etc/apt/sources.list.d/llvm.list
-        sudo apt-get update -y
-        sudo apt-get install clang-tidy-17 cppcheck gcc-12 g++-12 git curl zip unzip tar ninja-build -y -q
+        sudo apt-get install clang-tidy-15 cppcheck gcc-12 g++-12 git curl zip unzip tar ninja-build -y -q
         echo $VCPKG_ROOT
         
         git clone https://github.com/microsoft/vcpkg $VCPKG_ROOT
