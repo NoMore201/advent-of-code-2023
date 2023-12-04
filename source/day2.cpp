@@ -151,43 +151,43 @@ int AoC::day2_solution_part2(std::string_view input) {
 
         auto max_red = std::accumulate(game_result.begin(), game_result.end(), 0,
                                        [](int max_in_game, const auto round_count) {
-            const auto max_red = std::accumulate(round_count.red.begin(), round_count.red.end(), 0,
+            const auto local_max = std::accumulate(round_count.red.begin(), round_count.red.end(), 0,
                                                  [](int max_in_round, int count) {
                 if (count > max_in_round) {
                     return count;
                 }
                 return max_in_round;
             });
-            if (max_red > max_in_game) {
-                return max_red;
+            if (local_max > max_in_game) {
+                return local_max;
             }
             return max_in_game;
         });
         auto max_green = std::accumulate(game_result.begin(), game_result.end(), 0,
                                        [](int max_in_game, const auto round_count) {
-            const auto max_green = std::accumulate(round_count.green.begin(), round_count.green.end(), 0,
+            const auto local_max = std::accumulate(round_count.green.begin(), round_count.green.end(), 0,
                                                  [](int max_in_round, int count) {
                 if (count > max_in_round) {
                     return count;
                 }
                 return max_in_round;
             });
-            if (max_green > max_in_game) {
-                return max_green;
+            if (local_max > max_in_game) {
+                return local_max;
             }
             return max_in_game;
         });
         auto max_blue = std::accumulate(game_result.begin(), game_result.end(), 0,
                                        [](int max_in_game, const auto round_count) {
-            const auto max_blue = std::accumulate(round_count.blue.begin(), round_count.blue.end(), 0,
+            const auto local_max = std::accumulate(round_count.blue.begin(), round_count.blue.end(), 0,
                                                  [](int max_in_round, int count) {
                 if (count > max_in_round) {
                     return count;
                 }
                 return max_in_round;
             });
-            if (max_blue > max_in_game) {
-                return max_blue;
+            if (local_max > max_in_game) {
+                return local_max;
             }
             return max_in_game;
         });
