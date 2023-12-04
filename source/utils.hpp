@@ -23,6 +23,29 @@ template <typename T> std::set<T> range_to_set(std::ranges::forward_range auto &
     return std::set<T>(rng.begin(), rng.end());
 }
 
+template <typename T>
+    requires std::integral<T>
+struct ParseResult {
+    T final_number{};
+    std::ptrdiff_t iterator_offset{};
+};
+
+template <typename T>
+    requires std::integral<T>
+std::optional<ParseResult<T>> try_parse_number(std::basic_string_view<char>::iterator begin,
+                                               std::basic_string_view<char>::iterator end) {
+    const auto begin_ptr = &*begin;
+    const auto end_ptr = &*end;
+    int final_number{};
+    auto parse_result = std::from_chars(begin_ptr, end_ptr, final_number);
+    if (parse_result.ec == std::errc()) {
+        auto pointer_offset = std::distance(begin_ptr, parse_result.ptr);
+        return {ParseResult<T>{final_number, pointer_offset}};
+    }
+
+    return {};
+}
+
 std::vector<std::string_view> split(std::string_view str, char delim);
 
 std::vector<std::string_view> split(std::basic_string_view<char>::const_iterator begin,
