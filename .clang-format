@@ -5,3 +5,4 @@ IndentWidth: 4
 AccessModifierOffset: -4
 ColumnLimit: 110
 LambdaBodyIndentation: OuterScope
+NamespaceIndentation: None
