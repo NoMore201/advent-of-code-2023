@@ -44,23 +44,23 @@ ScratchCard parse_scratch_card(std::string_view line) {
     const auto &played_str = sections[1];
 
     // parse winning numbers
-    for (auto it = winning_str.begin(); it != winning_str.end();) {
-        auto parse_result = Utils::try_parse_number<int>(it, winning_str.end());
+    for (std::size_t index = 0; index < winning_str.size(); ) {
+        auto parse_result = Utils::try_parse_number<int>(winning_str.substr(index));
         if (parse_result) {
             card.winning.push_back(parse_result->final_number);
-            it += parse_result->iterator_offset;
+            index += static_cast<std::size_t>(parse_result->iterator_offset);
         } else {
-            it++;
+            index++;
         }
     }
     // parse played numbers
-    for (auto it = played_str.begin(); it != played_str.end();) {
-        auto parse_result = Utils::try_parse_number<int>(it, played_str.end());
+    for (std::size_t index = 0; index < played_str.size(); ) {
+        auto parse_result = Utils::try_parse_number<int>(played_str.substr(index));
         if (parse_result) {
             card.played.push_back(parse_result->final_number);
-            it += parse_result->iterator_offset;
+            index += static_cast<size_t>(parse_result->iterator_offset);
         } else {
-            it++;
+            index++;
         }
     }
 
