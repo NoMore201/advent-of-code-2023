@@ -56,15 +56,17 @@ std::vector<Object> parse_objects(std::string_view line) {
         for (std::size_t column = 0; column < line_size;) {
             const char item = lines[row][column];
             if (is_symbol(item)) {
-                result.emplace_back(Object::Type::Symbol, item, row, Range{column, column});
+                Object obj{Object::Type::Symbol, item, row, Range{column, column}};
+                result.push_back(obj);
                 column++;
             } else if (is_digit(item)) {
                 auto substr = lines[row].substr(column);
                 auto parse_result = Utils::try_parse_number<std::size_t>(substr);
                 if (parse_result) {
                     auto offset = static_cast<size_t>(parse_result->iterator_offset);
-                    result.emplace_back(Object::Type::Number, parse_result->final_number, row,
-                                        Range{column, column + offset - 1});
+                    Object obj{Object::Type::Number, parse_result->final_number, row,
+                               Range{column, column + offset - 1}};
+                    result.push_back(obj);
                     column += offset;
                 } else {
                     column++;
