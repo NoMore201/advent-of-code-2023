@@ -21,14 +21,14 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt-get install clang-tidy-15 cppcheck gcc-13 g++-13 git curl zip unzip tar ninja-build -y -q
+        sudo apt-get install gcc-13 g++-13 git curl zip unzip tar ninja-build -y -q
         echo $VCPKG_ROOT
         
         git clone https://github.com/microsoft/vcpkg $VCPKG_ROOT
         $VCPKG_ROOT/bootstrap-vcpkg.sh -disableMetrics
 
     - name: Configure
-      run: cmake --preset ci-debian
+      run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake -Daoc_DEVELOPER_MODE=ON -DVCPKG_MANIFEST_FEATURES=test -GNinja -Bbuild/ci .
 
     - name: Build
       run: cmake --build build/ci --config Release -j 2
