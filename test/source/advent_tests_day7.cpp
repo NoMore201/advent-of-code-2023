@@ -1024,5 +1024,5 @@ TEST(AdventOfCode, Day7Part1) {
 }
 
 TEST(AdventOfCode, Day7Part2) {
-    // EXPECT_EQ(123, AoC::day7_solution_part2(example_input));
+    EXPECT_EQ(246436046, AoC::day7_solution_part2(exercise_input));
 }

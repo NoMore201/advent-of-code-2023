@@ -126,28 +126,27 @@ struct CardsCombination {
 
     ContainerType sorted;
     ContainerType original;
-    std::vector<char> sorted_jokers;
-    usize number_of_jokers;
     usize bid;
 
-    explicit CardsCombination(std::string_view line) {
+    explicit CardsCombination(std::string_view line)
+        : sorted(), original()
+    {
         const auto line_segments = Utils::split(line, ' ');
         Ensures(line_segments.size() == 2 && line_segments[0].size() == 5);
         std::copy(line_segments[0].begin(), line_segments[0].end(), original.begin());
         std::copy(original.begin(), original.end(), sorted.begin());
         std::sort(sorted.begin(), sorted.end());
-        std::copy_if(sorted.begin(), sorted.end(), std::back_inserter(sorted_jokers),
-                     [](char item) { return item != 'J'; });
-        number_of_jokers = static_cast<usize>(std::count(original.begin(), original.end(), 'J'));
-        // idea: we consider joker as the highest rank card in the pool
-        for (usize index = 0; index < number_of_jokers; index++) {
-            auto highest_rank_card = sorted[0];
-            sorted_jokers.insert(sorted_jokers.begin(), highest_rank_card);
-        }
+
         bid = Utils::parse_integer<usize>(line_segments[1]);
     }
 
-    static DiffPoint get_diff_points(const auto& container) {
+    virtual ~CardsCombination() = default;
+    CardsCombination(const CardsCombination&) = default;
+    CardsCombination(CardsCombination&&) = default;
+    CardsCombination& operator=(const CardsCombination&) = default;
+    CardsCombination& operator=(CardsCombination&&) = default;
+
+    static DiffPoint get_diff_points(const auto &container) {
         std::bitset<max_size - 1> bitset{};
         char last_item = container[0];
         for (usize index = 1; index < container.size(); index++) {
@@ -159,10 +158,85 @@ struct CardsCombination {
         return static_cast<DiffPoint>(bitset.to_ulong());
     }
 
-    HandType get_hand_type() const { return map_diff_point_to_type(get_diff_points(sorted)); }
-    HandType get_hand_type_with_jokers() const { return map_diff_point_to_type(get_diff_points(sorted_jokers)); }
-
+    virtual HandType get_hand_type() const { return map_diff_point_to_type(get_diff_points(sorted)); }
 };
+
+struct JokerCardCombination : public CardsCombination {
+
+    std::vector<char> sorted_no_joker;
+
+    explicit JokerCardCombination(std::string_view line)
+        : CardsCombination(line) {
+
+        // copy elements ignoring joker
+        auto number_of_jokers = std::count(original.begin(), original.end(), 'J');
+        std::copy_if(sorted.begin(), sorted.end(), std::back_inserter(sorted_no_joker), [](char item) {
+            return item != 'J';
+        });
+
+        // sort cards by count, if count is equal sort by rank
+        std::sort(sorted_no_joker.begin(), sorted_no_joker.end(), [this](const char first, const char second){
+            auto count_first = std::count(original.begin(), original.end(), first);
+            auto count_second = std::count(original.begin(), original.end(), second);
+
+            if (count_first == count_second) {
+                // sort by rank
+                return map_card_to_rank_step_two(first) > map_card_to_rank_step_two(second);
+            }
+            return count_first > count_second;
+        });
+
+        if (number_of_jokers == 5) {
+            for (usize index = 0; index < 5; index++) {
+                sorted_no_joker.push_back('A');
+            }
+        } else if (number_of_jokers > 0) {
+            auto highest_rank_card = sorted_no_joker[0];
+            for (int64_t index = 0; index < number_of_jokers; index++) {
+                sorted_no_joker.insert(sorted_no_joker.begin(), highest_rank_card);
+            }
+        }
+
+        Ensures(sorted_no_joker.size() == 5);
+    }
+
+    HandType get_hand_type() const override {
+        return map_diff_point_to_type(get_diff_points(sorted_no_joker));
+    }
+};
+
+/*struct JokerCardCombination : public CardsCombination {
+
+    usize number_of_jokers;
+    std::vector<char> sorted_no_joker;
+
+    explicit JokerCardCombination(std::string_view line) : CardsCombination(line) {
+        auto joker_count = std::count(sorted.begin(), sorted.end(), 'J');
+        number_of_jokers = static_cast<usize>(joker_count);
+        std::copy_if(sorted.begin(), sorted.end(), std::back_inserter(sorted_no_joker), [](char item){
+            return item != 'J';
+        });
+    }
+
+    HandType get_hand_type() const override {
+        if (number_of_jokers == 0) {
+            return CardsCombination::get_hand_type();
+        }
+
+        if (number_of_jokers == 5 || number_of_jokers == 4) {
+            return HandType::FiveOfAKind;
+        }
+
+        if (number_of_jokers == 3) {
+            if (sorted_no_joker[0] == sorted_no_joker[1]) {
+                return HandType::FiveOfAKind;
+            }
+            return HandType::FourOfAKind;
+        }
+
+    }
+
+};*/
 
 std::vector<CardsCombination> parse_card_hands_list(const std::vector<std::string_view> &lines) {
     std::vector<CardsCombination> result{};
@@ -173,44 +247,24 @@ std::vector<CardsCombination> parse_card_hands_list(const std::vector<std::strin
     return result;
 }
 
-void sort_hands_by_rank(std::vector<CardsCombination> &hands) {
-    std::sort(hands.begin(), hands.end(), [](const CardsCombination &first, const CardsCombination &second) {
-        // returns true if the first argument is less than (i.e. is ordered before) the second.
-        auto first_type = first.get_hand_type();
-        auto second_type = second.get_hand_type();
-        if (first_type != second_type) {
-            return static_cast<int>(first_type) < static_cast<int>(second_type);
-        }
+bool sort_by_rank_compare_fn (const CardsCombination &first, const CardsCombination &second) {
+    // returns true if the first argument is less than (i.e. is ordered before) the second.
+    auto first_type = first.get_hand_type();
+    auto second_type = second.get_hand_type();
+    if (first_type != second_type) {
+        return static_cast<int>(first_type) < static_cast<int>(second_type);
+    }
 
-        for (usize index = 0; index < CardsCombination::max_size; index++) {
-            auto first_card_rank = map_card_to_rank(first.original.at(index));
-            auto second_card_rank = map_card_to_rank(second.original.at(index));
-            if (first_card_rank == second_card_rank) {
-                continue;
-            }
-            return first_card_rank < second_card_rank;
+    for (usize index = 0; index < CardsCombination::max_size; index++) {
+        auto first_card_rank = map_card_to_rank(first.original.at(index));
+        auto second_card_rank = map_card_to_rank(second.original.at(index));
+        if (first_card_rank == second_card_rank) {
+            continue;
         }
-    });
-}
+        return first_card_rank < second_card_rank;
+    }
 
-void sort_hands_by_rank_with_joker(std::vector<CardsCombination> &hands) {
-    std::sort(hands.begin(), hands.end(), [](const CardsCombination &first, const CardsCombination &second) {
-        // returns true if the first argument is less than (i.e. is ordered before) the second.
-        auto first_type = first.get_hand_type_with_jokers();
-        auto second_type = second.get_hand_type_with_jokers();
-        if (first_type != second_type) {
-            return static_cast<int>(first_type) < static_cast<int>(second_type);
-        }
-
-        for (usize index = 0; index < CardsCombination::max_size; index++) {
-            auto first_card_rank = map_card_to_rank_step_two(first.original.at(index));
-            auto second_card_rank = map_card_to_rank_step_two(second.original.at(index));
-            if (first_card_rank == second_card_rank) {
-                continue;
-            }
-            return first_card_rank < second_card_rank;
-        }
-    });
+    return false;
 }
 
 } // namespace
@@ -218,7 +272,7 @@ void sort_hands_by_rank_with_joker(std::vector<CardsCombination> &hands) {
 std::size_t AoC::day7_solution_part1(std::string_view input) {
     const auto lines = Utils::split(input, '\n');
     auto hands = parse_card_hands_list(lines);
-    sort_hands_by_rank(hands);
+    std::sort(hands.begin(), hands.end(), sort_by_rank_compare_fn);
 
     usize total_winnings{};
     usize current_rank{1};
@@ -233,8 +287,29 @@ std::size_t AoC::day7_solution_part1(std::string_view input) {
 
 std::size_t AoC::day7_solution_part2(std::string_view input) {
     const auto lines = Utils::split(input, '\n');
-    auto hands = parse_card_hands_list(lines);
-    sort_hands_by_rank_with_joker(hands);
+    std::vector<JokerCardCombination> hands{};
+
+    std::transform(lines.begin(), lines.end(), std::back_inserter(hands),
+                   [](std::string_view line) { return JokerCardCombination{line}; });
+
+    std::sort(hands.begin(), hands.end(), [](const JokerCardCombination& first, const JokerCardCombination& second) {
+        auto first_type = first.get_hand_type();
+        auto second_type = second.get_hand_type();
+        if (first_type != second_type) {
+            return static_cast<int>(first_type) < static_cast<int>(second_type);
+        }
+
+        for (usize index = 0; index < CardsCombination::max_size; index++) {
+            auto first_card_rank = map_card_to_rank_step_two(first.original.at(index));
+            auto second_card_rank = map_card_to_rank_step_two(second.original.at(index));
+            if (first_card_rank == second_card_rank) {
+                continue;
+            }
+            return first_card_rank < second_card_rank;
+        }
+
+        return false;
+    });
 
     usize total_winnings{};
     usize current_rank{1};
