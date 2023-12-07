@@ -235,6 +235,5 @@ TEST(AdventOfCode, Day5Part1) {
 }
 
 TEST(AdventOfCode, Day5Part2) {
-    GTEST_SKIP();
     EXPECT_EQ(219529182, AoC::day5_solution_part2(exercise_input));
 }
