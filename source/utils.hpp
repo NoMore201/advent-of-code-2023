@@ -61,16 +61,11 @@ template <typename I>
     requires std::integral<I>
 I parse_integer(std::basic_string_view<char>::const_iterator begin,
                 std::basic_string_view<char>::const_iterator end) {
-    I integer{};
-    const auto *begin_ptr = &*begin;
-    const auto length = std::distance(begin, end);
-
-    auto result = std::from_chars(begin_ptr, begin_ptr + length, integer);
-    if (result.ec != std::errc()) {
+    auto parse_result = try_parse_number<I>(std::string_view{begin, end});
+    if (!parse_result) {
         throw std::runtime_error("Error while parsing value from string");
     }
-
-    return integer;
+    return (*parse_result).final_number;
 }
 
 template <typename I>

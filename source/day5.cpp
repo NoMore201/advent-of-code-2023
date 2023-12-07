@@ -10,16 +10,14 @@
 namespace {
 
 using usize = std::size_t; // NOLINT(readability-identifier-naming)
-using i64 = int64_t; // NOLINT(readability-identifier-naming)
+using i64 = int64_t;       // NOLINT(readability-identifier-naming)
 
 struct Range {
     usize start{};
     usize length{};
     i64 diff{};
 
-    constexpr bool in_range(usize seed) const noexcept {
-        return seed >= start && seed < start + length;
-    }
+    constexpr bool in_range(usize seed) const noexcept { return seed >= start && seed < start + length; }
 };
 
 class SeedMap {
@@ -41,21 +39,19 @@ public:
 
     usize mapped_value(usize key) const {
         // we assume range do not overlap
-        for (const auto& map_range : m_map) {
-            if (map_range.in_range(key))
-            {
-                const auto index = key - map_range.start;
-                return map_range.start + index + map_range.diff;
-            }
+        auto range = std::find_if(m_map.begin(), m_map.end(),
+                                  [key](const Range &range) { return range.in_range(key); });
+        if (range != m_map.end()) {
+            const auto index = key - range->start;
+            return range->start + index + range->diff;
         }
 
         return key;
     }
 
     usize get_key_for_value(usize value) const {
-        for (const auto& range : m_map) {
+        for (const auto &range : m_map) {
             usize start_key = range.start;
-            usize final_key = start_key + range.length;
             usize start_value = start_key + range.diff;
             usize final_value = start_value + range.length;
             if (value >= start_value && value < final_value) {
@@ -65,7 +61,6 @@ public:
         }
         return value;
     }
-
 };
 
 std::vector<usize> parse_seeds(std::string_view line) {
@@ -78,7 +73,7 @@ std::vector<usize> parse_seeds(std::string_view line) {
     return seeds_values;
 }
 
-std::vector<SeedMap> parse_seed_map(const std::vector<std::string_view>& lines) {
+std::vector<SeedMap> parse_seed_map(const std::vector<std::string_view> &lines) {
     std::vector<SeedMap> seed_map_list{};
 
     for (auto current_it = lines.begin() + 2; current_it != lines.end();) {
@@ -104,16 +99,17 @@ std::size_t AoC::day5_solution_part1(std::string_view input) {
     std::vector<SeedMap> seed_map_list = parse_seed_map(lines);
     const std::vector<usize> seeds = parse_seeds(lines[0]);
 
-    std::vector<usize> result;
-    for (const auto seed : seeds) {
+    return std::accumulate(seeds.begin(), seeds.end(), std::numeric_limits<usize>::max(),
+                           [&seed_map_list](usize min, usize seed) {
         usize transformed = seed;
-        for (const auto& map : seed_map_list) {
+        for (const auto &map : seed_map_list) {
             transformed = map.mapped_value(transformed);
         }
-        result.push_back(transformed);
-    }
-
-    return *std::min_element(result.begin(), result.end());
+        if (transformed < min) {
+            return transformed;
+        }
+        return min;
+    });
 }
 
 std::size_t AoC::day5_solution_part2(std::string_view input) {
@@ -131,8 +127,9 @@ std::size_t AoC::day5_solution_part2(std::string_view input) {
     // backward finding the original key that generated it. Then check if that
     // key is contained in original list
     auto humidity_to_location = seed_map_list.back();
-    auto max_seed_range = std::max_element(final_seed_list.begin(), final_seed_list.end(), [](const Range& first, const Range& second){
-       return first.start + first.length < second.start + second.length;
+    auto max_seed_range = std::max_element(final_seed_list.begin(), final_seed_list.end(),
+                                           [](const Range &first, const Range &second) {
+        return first.start + first.length < second.start + second.length;
     });
     Ensures(max_seed_range != final_seed_list.end());
     usize max_seed_value = max_seed_range->start + max_seed_range->length;
@@ -146,9 +143,9 @@ std::size_t AoC::day5_solution_part2(std::string_view input) {
             current_value = final_key;
         }
 
-        auto is_in_original_range = std::any_of(final_seed_list.begin(), final_seed_list.end(), [final_key](const Range& range){
-            return range.in_range(final_key);
-        });
+        auto is_in_original_range =
+            std::any_of(final_seed_list.begin(), final_seed_list.end(),
+                        [final_key](const Range &range) { return range.in_range(final_key); });
         if (is_in_original_range) {
             return location_value;
         }
