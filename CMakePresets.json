@@ -129,13 +129,23 @@
       }
     },
     {
-      "name": "ci-sanitize",
+      "name": "ci-sanitize-linux",
       "binaryDir": "${sourceDir}/build/sanitize",
       "inherits": ["ci-linux", "dev-mode", "vcpkg"],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Sanitize",
         "CMAKE_CXX_FLAGS_SANITIZE": "-O2 -g -fsanitize=address,undefined -fno-omit-frame-pointer -fno-common",
         "CMAKE_MAP_IMPORTED_CONFIG_SANITIZE": "Sanitize;RelWithDebInfo;Release;Debug;"
+      }
+    },
+{
+      "name": "ci-sanitize-win64",
+      "binaryDir": "${sourceDir}/build/sanitize",
+      "inherits": ["ci-win64", "dev-mode", "vcpkg"],
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_FLAGS_RELEASE": "/fsanitize=address /Zi"
       }
     },
     {
