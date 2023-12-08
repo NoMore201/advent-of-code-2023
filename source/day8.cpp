@@ -185,14 +185,13 @@ std::size_t AoC::day8_solution_part2(std::string_view input) {
     // try the lcm approach
     std::vector<Size> count_points;
     count_points.reserve(path_iterators.size());
-    for (auto & path_iterator : path_iterators) {
+    for (auto &path_iterator : path_iterators) {
         count_points.push_back(path_iterator.find_next_end());
     }
 
     Ensures(count_points.size() > 1);
-    auto lcm = std::accumulate(count_points.begin() + 1, count_points.end(), count_points[0], [](Size final, Size current) {
-        return std::lcm(final, current);
-    });
+    auto lcm = std::accumulate(count_points.begin() + 1, count_points.end(), count_points[0],
+                               [](Size final, Size current) { return std::lcm(final, current); });
 
     return lcm;
 }
