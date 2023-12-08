@@ -54,8 +54,7 @@ std::optional<ParseResult<T>> try_parse_number(std::string_view str) {
 
 std::vector<std::string_view> split(std::string_view str, char delim);
 
-std::vector<std::string_view> split(std::basic_string_view<char>::const_iterator begin,
-                                    std::basic_string_view<char>::const_iterator end, char delim);
+std::vector<std::string_view> split(std::string_view str, std::string_view delim);
 
 template <typename I>
     requires std::integral<I>
@@ -80,16 +79,5 @@ I parse_integer(std::basic_string<char>::const_iterator begin, std::basic_string
     return parse_integer<I>(std::string_view{begin, end});
 }
 
-template <typename T> std::stack<T> reverse_stack(std::stack<T> &original) {
-    // TODO: should the original be consumed ?
-    std::stack<T> reversed{};
-    const auto original_size = original.size();
-    for (std::stack<char>::size_type count = 0; count < original_size; count++) {
-        const auto top = original.top();
-        original.pop();
-        reversed.push(top);
-    }
-    return reversed;
-}
 
 } // namespace Utils

@@ -20,7 +20,17 @@ std::vector<std::string_view> Utils::split(const std::string_view str, char deli
     return result;
 }
 
-std::vector<std::string_view> Utils::split(std::basic_string_view<char>::const_iterator begin,
-                                           std::basic_string_view<char>::const_iterator end, char delim) {
-    return split(std::string_view{begin, end}, delim);
+std::vector<std::string_view> Utils::split(std::string_view str, std::string_view delim) {
+    using Size = std::string_view::size_type;
+    Size find_pos{};
+    Size begin_pos{};
+    std::vector<std::string_view> result{};
+    auto current_string = str;
+    while ((find_pos = current_string.find(delim)) != std::string_view::npos) {
+        result.push_back(str.substr(begin_pos, find_pos - begin_pos));
+        begin_pos = find_pos + delim.size();
+        current_string = current_string.substr(begin_pos);
+    }
+    result.push_back(current_string);
+    return result;
 }
