@@ -52,7 +52,7 @@ CommandList parse_commands(std::string_view line) {
 
 void strip_extra_chars_from(std::string &string) {
     const auto to_be_erased = {' ', '(', ')'};
-    for (char item : to_be_erased) {
+    for (const char item : to_be_erased) {
         Size current_pos = 0;
         while ((current_pos = string.find(item)) != std::string_view::npos) {
             string.erase(current_pos, 1);
@@ -173,7 +173,7 @@ std::size_t AoC::day8_solution_part2(std::string_view input) {
     const auto commands = parse_commands(split_by_empty_line[0]);
     const auto path_map = parse_map(Utils::split(split_by_empty_line[1], '\n'));
 
-    CommandIterator iterator{commands};
+    const CommandIterator iterator{commands};
     auto current_keys = get_start_keys(path_map);
     std::vector<PathIterator> path_iterators{};
 
@@ -183,7 +183,8 @@ std::size_t AoC::day8_solution_part2(std::string_view input) {
     });
 
     // try the lcm approach
-    std::vector<Size> count_points{};
+    std::vector<Size> count_points;
+    count_points.reserve(path_iterators.size());
     for (auto & path_iterator : path_iterators) {
         count_points.push_back(path_iterator.find_next_end());
     }
