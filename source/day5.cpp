@@ -5,6 +5,7 @@
 #include <gsl/assert>
 #include <map>
 #include <numeric>
+#include <ranges>
 #include <vector>
 
 namespace {
@@ -40,7 +41,7 @@ public:
     usize mapped_value(usize key) const {
         // we assume range do not overlap
         auto range = std::find_if(m_map.begin(), m_map.end(),
-                                  [key](const Range &range) { return range.in_range(key); });
+                                  [key](const Range &rng) { return rng.in_range(key); });
         if (range != m_map.end()) {
             const auto index = key - range->start;
             return range->start + index + range->diff;
@@ -51,9 +52,9 @@ public:
 
     usize get_key_for_value(usize value) const {
         for (const auto &range : m_map) {
-            usize start_key = range.start;
-            usize start_value = start_key + range.diff;
-            usize final_value = start_value + range.length;
+            const usize start_key = range.start;
+            const usize start_value = start_key + range.diff;
+            const usize final_value = start_value + range.length;
             if (value >= start_value && value < final_value) {
                 auto offset = value - start_value;
                 return start_key + offset;
@@ -137,8 +138,8 @@ std::size_t AoC::day5_solution_part2(std::string_view input) {
     for (usize location_value = 0; location_value < max_seed_value; location_value++) {
         auto current_value = location_value;
         usize final_key = 0;
-        for (auto iter = seed_map_list.rbegin(); iter != seed_map_list.rend(); iter++) {
-            final_key = iter->get_key_for_value(current_value);
+        for (auto & iter : std::ranges::reverse_view(seed_map_list)) {
+            final_key = iter.get_key_for_value(current_value);
             // in the previous map, the current key becomes the location_value
             current_value = final_key;
         }

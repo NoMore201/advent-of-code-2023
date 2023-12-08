@@ -6,7 +6,6 @@ namespace {
 
 using usize = std::size_t; // NOLINT(readability-identifier-naming)
 
-constexpr usize start_speed_mm_s = 0;
 constexpr usize speed_increase_per_ms_factor = 1; // each ms holding button, speed increases by x*factor mm/ms
 
 std::vector<usize> parse_integers_from_string(std::string_view line) {
