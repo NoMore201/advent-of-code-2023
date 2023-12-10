@@ -52,10 +52,6 @@ std::optional<ParseResult<T>> try_parse_number(std::string_view str) {
     return {};
 }
 
-std::vector<std::string_view> split(std::string_view str, char delim);
-
-std::vector<std::string_view> split(std::string_view str, std::string_view delim);
-
 template <typename I>
     requires std::integral<I>
 I parse_integer(std::basic_string_view<char>::const_iterator begin,

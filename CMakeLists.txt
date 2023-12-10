@@ -19,7 +19,6 @@ add_library(
   aoc_lib
   OBJECT
   source/day1.cpp
-  source/utils.cpp
   source/day2.hpp
   source/day2.cpp
   source/day3.cpp
@@ -29,6 +28,7 @@ add_library(
   source/day6.cpp
   source/day7.cpp
   source/day8.cpp
+  source/string.cpp
 )
 
 target_include_directories(

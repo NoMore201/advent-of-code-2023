@@ -1,4 +1,5 @@
 #include "day4.hpp"
+#include "string.hpp"
 #include "utils.hpp"
 
 #include <map>
@@ -29,8 +30,8 @@ struct ScratchCard {
 };
 
 std::size_t parse_card_number(std::string_view line) {
-    const auto sections = Utils::split(line, ':');
-    const auto split_card_label = Utils::split(sections[0], ' ');
+    const auto sections = Utils::String::split(line, ':');
+    const auto split_card_label = Utils::String::split(sections[0], ' ');
 
     // there may be multiple spaces between "Card" label and the number
     return Utils::parse_integer<std::size_t>(split_card_label.back());
@@ -38,8 +39,8 @@ std::size_t parse_card_number(std::string_view line) {
 
 ScratchCard parse_scratch_card(std::string_view line) {
     ScratchCard card;
-    const auto number_substring = Utils::split(line, ':');
-    const auto sections = Utils::split(number_substring[1], '|');
+    const auto number_substring = Utils::String::split(line, ':');
+    const auto sections = Utils::String::split(number_substring[1], '|');
     const auto &winning_str = sections[0];
     const auto &played_str = sections[1];
 
@@ -78,7 +79,7 @@ int get_total_winning_points(const ScratchCard &card) {
 } // anonymous namespace
 
 int AoC::day4_solution_part1(std::string_view input) {
-    const auto lines = Utils::split(input, '\n');
+    const auto lines = Utils::String::split(input, '\n');
 
     return std::accumulate(lines.begin(), lines.end(), 0, [](int sum, std::string_view line) {
         const auto card = parse_scratch_card(line);
@@ -87,7 +88,7 @@ int AoC::day4_solution_part1(std::string_view input) {
 }
 
 std::size_t AoC::day4_solution_part2(std::string_view input) {
-    const auto lines = Utils::split(input, '\n');
+    const auto lines = Utils::String::split(input, '\n');
     std::map<std::size_t, ScratchCard> card_map{};
 
     for (auto line : lines) {

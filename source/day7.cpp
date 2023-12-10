@@ -1,4 +1,5 @@
 #include "day7.hpp"
+#include "string.hpp"
 #include "utils.hpp"
 
 #include <gsl/assert>
@@ -131,7 +132,7 @@ struct CardsCombination {
     explicit CardsCombination(std::string_view line)
         : sorted(), original()
     {
-        const auto line_segments = Utils::split(line, ' ');
+        const auto line_segments = Utils::String::split(line, ' ');
         Ensures(line_segments.size() == 2 && line_segments[0].size() == 5);
         std::copy(line_segments[0].begin(), line_segments[0].end(), original.begin());
         std::copy(original.begin(), original.end(), sorted.begin());
@@ -270,7 +271,7 @@ bool sort_by_rank_compare_fn (const CardsCombination &first, const CardsCombinat
 } // namespace
 
 std::size_t AoC::day7_solution_part1(std::string_view input) {
-    const auto lines = Utils::split(input, '\n');
+    const auto lines = Utils::String::split(input, '\n');
     auto hands = parse_card_hands_list(lines);
     std::sort(hands.begin(), hands.end(), sort_by_rank_compare_fn);
 
@@ -286,7 +287,7 @@ std::size_t AoC::day7_solution_part1(std::string_view input) {
 }
 
 std::size_t AoC::day7_solution_part2(std::string_view input) {
-    const auto lines = Utils::split(input, '\n');
+    const auto lines = Utils::String::split(input, '\n');
     std::vector<JokerCardCombination> hands{};
 
     std::transform(lines.begin(), lines.end(), std::back_inserter(hands),

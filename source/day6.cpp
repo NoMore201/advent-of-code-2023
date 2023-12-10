@@ -1,5 +1,7 @@
 #include "day6.hpp"
+#include "string.hpp"
 #include "utils.hpp"
+
 #include <gsl/assert>
 
 namespace {
@@ -27,14 +29,14 @@ usize parse_full_integer(std::string_view line) {
 
     std::copy_if(line.begin(), line.end(), std::back_inserter(line_without_spaces),
                  [](char item) { return item != ' '; });
-    const auto line_split_by_colon = Utils::split(line_without_spaces, ':');
+    const auto line_split_by_colon = Utils::String::split(line_without_spaces, ':');
     return Utils::parse_integer<usize>(line_split_by_colon[1]);
 }
 
 } // anonymous namespace
 
 std::size_t AoC::day6_solution_part1(std::string_view input) {
-    const auto lines = Utils::split(input, '\n');
+    const auto lines = Utils::String::split(input, '\n');
     const auto times = parse_integers_from_string(lines[0]);
     const auto distances = parse_integers_from_string(lines[1]);
 
@@ -62,7 +64,7 @@ std::size_t AoC::day6_solution_part1(std::string_view input) {
 }
 
 std::size_t AoC::day6_solution_part2(std::string_view input) {
-    const auto lines = Utils::split(input, '\n');
+    const auto lines = Utils::String::split(input, '\n');
     auto race_duration = parse_full_integer(lines[0]);
     auto record = parse_full_integer(lines[1]);
 

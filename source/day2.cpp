@@ -1,4 +1,5 @@
 #include "day2.hpp"
+#include "string.hpp"
 #include "utils.hpp"
 
 #include <algorithm>
@@ -21,8 +22,8 @@ struct RoundCount {
 using GameResult = std::vector<RoundCount>;
 
 int get_game_id(std::string_view line) {
-    const auto game_info_string = Utils::split(line, ':')[0];
-    const auto id_string = Utils::split(game_info_string, ' ')[1];
+    const auto game_info_string = Utils::String::split(line, ':')[0];
+    const auto id_string = Utils::String::split(game_info_string, ' ')[1];
     return Utils::parse_integer<int>(id_string);
 }
 
@@ -114,7 +115,7 @@ constexpr int max_blue_cubes = 14;
 } // anonymous namespace
 
 int AoC::day2_solution_part1(std::string_view input) {
-    const auto lines = Utils::split(input, '\n');
+    const auto lines = Utils::String::split(input, '\n');
     ColorParser parser{};
     int sum_of_game_ids{};
 
@@ -142,7 +143,7 @@ int AoC::day2_solution_part1(std::string_view input) {
 }
 
 int AoC::day2_solution_part2(std::string_view input) {
-    const auto lines = Utils::split(input, '\n');
+    const auto lines = Utils::String::split(input, '\n');
     ColorParser parser{};
     int sum_of_powers{};
 

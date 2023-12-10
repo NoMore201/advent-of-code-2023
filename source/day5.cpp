@@ -1,4 +1,5 @@
 #include "day5.hpp"
+#include "string.hpp"
 #include "utils.hpp"
 
 #include <algorithm>
@@ -29,7 +30,7 @@ public:
         Expects(lines.size() > 2);
         for (usize index = 1; index < lines.size(); index++) {
             std::vector<usize> numbers{};
-            const auto strings = Utils::split(lines[index], ' ');
+            const auto strings = Utils::String::split(lines[index], ' ');
             std::transform(strings.begin(), strings.end(), std::back_inserter(numbers),
                            [](std::string_view str) { return Utils::parse_integer<usize>(str); });
             Ensures(numbers.size() == 3);
@@ -66,7 +67,7 @@ public:
 
 std::vector<usize> parse_seeds(std::string_view line) {
     std::vector<usize> seeds_values;
-    auto seed_numbers_strings = Utils::split(line, ' ');
+    auto seed_numbers_strings = Utils::String::split(line, ' ');
     // erase first element, which is the string "seeds:"
     seed_numbers_strings.erase(seed_numbers_strings.begin());
     std::transform(seed_numbers_strings.begin(), seed_numbers_strings.end(), std::back_inserter(seeds_values),
@@ -96,7 +97,7 @@ std::vector<SeedMap> parse_seed_map(const std::vector<std::string_view> &lines) 
 } // anonymous namespace
 
 std::size_t AoC::day5_solution_part1(std::string_view input) {
-    const auto lines = Utils::split(input, '\n');
+    const auto lines = Utils::String::split(input, '\n');
     std::vector<SeedMap> seed_map_list = parse_seed_map(lines);
     const std::vector<usize> seeds = parse_seeds(lines[0]);
 
@@ -114,7 +115,7 @@ std::size_t AoC::day5_solution_part1(std::string_view input) {
 }
 
 std::size_t AoC::day5_solution_part2(std::string_view input) {
-    const auto lines = Utils::split(input, '\n');
+    const auto lines = Utils::String::split(input, '\n');
     std::vector<SeedMap> seed_map_list = parse_seed_map(lines);
     std::vector<usize> seeds = parse_seeds(lines[0]);
 

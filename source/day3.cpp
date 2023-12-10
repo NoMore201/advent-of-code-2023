@@ -1,4 +1,5 @@
 #include "day3.hpp"
+#include "string.hpp"
 #include "utils.hpp"
 
 #include <cctype>
@@ -49,7 +50,7 @@ struct Object {
 
 std::vector<Object> parse_objects(std::string_view line) {
     std::vector<Object> result{};
-    const auto lines = Utils::split(line, '\n');
+    const auto lines = Utils::String::split(line, '\n');
 
     for (std::size_t row = 0; row < lines.size(); row++) {
         const auto line_size = lines[row].size();

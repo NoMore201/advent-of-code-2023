@@ -1,4 +1,5 @@
 #include "day1.hpp"
+#include "string.hpp"
 #include "utils.hpp"
 
 #include <gsl/assert>
@@ -107,7 +108,7 @@ int parse_number_from_words(std::string_view line) {
 } // anonymous namespace
 
 int AoC::day1_solution_part1(std::string_view input) {
-    const auto lines = Utils::split(input, '\n');
+    const auto lines = Utils::String::split(input, '\n');
 
     return std::accumulate(lines.begin(), lines.end(), 0, [](int sum, std::string_view line) {
         return sum + parse_number_from_digits(line);
@@ -115,7 +116,7 @@ int AoC::day1_solution_part1(std::string_view input) {
 }
 
 int AoC::day1_solution_part2(std::string_view input) {
-    const auto lines = Utils::split(input, '\n');
+    const auto lines = Utils::String::split(input, '\n');
 
     return std::accumulate(lines.begin(), lines.end(), 0, [](int sum, std::string_view line) {
         return sum + parse_number_from_words(line);

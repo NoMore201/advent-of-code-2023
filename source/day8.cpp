@@ -1,4 +1,5 @@
 #include "day8.hpp"
+#include "string.hpp"
 #include "utils.hpp"
 
 #include <gsl/assert>
@@ -66,9 +67,9 @@ PathMap parse_map(const std::vector<std::string_view> &lines) {
     for (auto line : lines) {
         std::string current_line{line.begin(), line.end()};
         strip_extra_chars_from(current_line);
-        const auto split = Utils::split(current_line, '=');
+        const auto split = Utils::String::split(current_line, '=');
         Ensures(split.size() == 2);
-        const auto path_choices = Utils::split(split[1], ',');
+        const auto path_choices = Utils::String::split(split[1], ',');
         result.emplace(std::string{split[0].begin(), split[0].end()},
                        PathChoice{std::string{path_choices[0].begin(), path_choices[0].end()},
                                   std::string{path_choices[1].begin(), path_choices[1].end()}});
@@ -146,9 +147,9 @@ struct PathIterator {
 } // anonymous namespace
 
 std::size_t AoC::day8_solution_part1(std::string_view input) {
-    const auto split_by_empty_line = Utils::split(input, "\n\n");
+    const auto split_by_empty_line = Utils::String::split(input, "\n\n");
     const auto commands = parse_commands(split_by_empty_line[0]);
-    const auto path_map = parse_map(Utils::split(split_by_empty_line[1], '\n'));
+    const auto path_map = parse_map(Utils::String::split(split_by_empty_line[1], '\n'));
 
     CommandIterator iterator{commands};
     std::string current_key = "AAA";
@@ -169,9 +170,9 @@ std::size_t AoC::day8_solution_part1(std::string_view input) {
 
 std::size_t AoC::day8_solution_part2(std::string_view input) {
 
-    const auto split_by_empty_line = Utils::split(input, "\n\n");
+    const auto split_by_empty_line = Utils::String::split(input, "\n\n");
     const auto commands = parse_commands(split_by_empty_line[0]);
-    const auto path_map = parse_map(Utils::split(split_by_empty_line[1], '\n'));
+    const auto path_map = parse_map(Utils::String::split(split_by_empty_line[1], '\n'));
 
     const CommandIterator iterator{commands};
     auto current_keys = get_start_keys(path_map);
