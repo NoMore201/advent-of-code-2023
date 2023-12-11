@@ -75,5 +75,30 @@ I parse_integer(std::basic_string<char>::const_iterator begin, std::basic_string
     return parse_integer<I>(std::string_view{begin, end});
 }
 
+/**
+ * Parse sequence of numbers from string. Numbers can be separated by any separator.
+ * @tparam T Integer type
+ * @param str String containing a sequence of numbers
+ * @return Vector containing all the numbers in the provided string
+ */
+template<typename T>
+    requires std::integral<T>
+std::vector<T> parse_list(std::string_view str) {
+    using Size = std::string_view::size_type;
+
+    std::vector<T> number_list{};
+    for (Size index = 0; index < str.size();) {
+        auto result = try_parse_number<T>(str.substr(index));
+        if (result) {
+            number_list.push_back(result->final_number);
+            index += static_cast<Size>(result->iterator_offset);
+        } else {
+            ++index;
+        }
+    }
+
+    return number_list;
+}
+
 
 } // namespace Utils
