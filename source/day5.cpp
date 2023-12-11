@@ -29,11 +29,7 @@ public:
     explicit SeedMap(const std::vector<std::string_view> &lines) {
         Expects(lines.size() > 2);
         for (usize index = 1; index < lines.size(); index++) {
-            std::vector<usize> numbers{};
-            const auto strings = Utils::String::split(lines[index], ' ');
-            std::transform(strings.begin(), strings.end(), std::back_inserter(numbers),
-                           [](std::string_view str) { return Utils::parse_integer<usize>(str); });
-            Ensures(numbers.size() == 3);
+            std::vector<usize> numbers = Utils::parse_list<usize>(lines[index]);
             const auto diff = static_cast<i64>(numbers[0] - numbers[1]);
             m_map.emplace_back(Range{numbers[1], numbers[2], diff});
         }

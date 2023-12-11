@@ -10,20 +10,6 @@ using usize = std::size_t; // NOLINT(readability-identifier-naming)
 
 constexpr usize speed_increase_per_ms_factor = 1; // each ms holding button, speed increases by x*factor mm/ms
 
-std::vector<usize> parse_integers_from_string(std::string_view line) {
-    std::vector<usize> numbers;
-    for (usize index = 0; index < line.size();) {
-        auto parse_result = Utils::try_parse_number<usize>(line.substr(index));
-        if (parse_result) {
-            numbers.push_back(parse_result->final_number);
-            index += static_cast<usize>(parse_result->iterator_offset);
-        } else {
-            index++;
-        }
-    }
-    return numbers;
-}
-
 usize parse_full_integer(std::string_view line) {
     std::string line_without_spaces{};
 
@@ -37,8 +23,8 @@ usize parse_full_integer(std::string_view line) {
 
 std::size_t AoC::day6_solution_part1(std::string_view input) {
     const auto lines = Utils::String::split(input, '\n');
-    const auto times = parse_integers_from_string(lines[0]);
-    const auto distances = parse_integers_from_string(lines[1]);
+    const auto times = Utils::parse_list<usize>(lines[0]);
+    const auto distances = Utils::parse_list<usize>(lines[1]);
 
     Ensures(times.size() == distances.size());
 

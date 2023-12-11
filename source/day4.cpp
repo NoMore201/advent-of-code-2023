@@ -45,25 +45,9 @@ ScratchCard parse_scratch_card(std::string_view line) {
     const auto &played_str = sections[1];
 
     // parse winning numbers
-    for (std::size_t index = 0; index < winning_str.size(); ) {
-        auto parse_result = Utils::try_parse_number<int>(winning_str.substr(index));
-        if (parse_result) {
-            card.winning.push_back(parse_result->final_number);
-            index += static_cast<std::size_t>(parse_result->iterator_offset);
-        } else {
-            index++;
-        }
-    }
+    card.winning = Utils::parse_list<int>(winning_str);
     // parse played numbers
-    for (std::size_t index = 0; index < played_str.size(); ) {
-        auto parse_result = Utils::try_parse_number<int>(played_str.substr(index));
-        if (parse_result) {
-            card.played.push_back(parse_result->final_number);
-            index += static_cast<size_t>(parse_result->iterator_offset);
-        } else {
-            index++;
-        }
-    }
+    card.played = Utils::parse_list<int>(played_str);
 
     return card;
 }
