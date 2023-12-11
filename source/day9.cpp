@@ -17,7 +17,6 @@ using Size = std::size_t;
 
 class SequenceTree {
 public:
-
     using Iterator = std::vector<Sequence>::const_iterator;
     using ReverseIterator = std::vector<Sequence>::const_reverse_iterator;
 
@@ -47,15 +46,24 @@ public:
         }
     }
 
-    int extrapolate() const {
+    int extrapolate_forward() const {
         int next_item = m_tree.back().back();
         for (auto list_iter = rbegin() + 1; list_iter != rend(); list_iter++) {
-            auto lower_list = list_iter - 1;
             next_item += list_iter->back();
         }
 
         return next_item;
     }
+
+    int extrapolate_backward() const {
+        int next_item = m_tree.back().front();
+        for (auto list_iter = rbegin() + 1; list_iter != rend(); list_iter++) {
+            next_item = list_iter->front() - next_item;
+        }
+
+        return next_item;
+    }
+
 };
 
 } // namespace
@@ -65,13 +73,25 @@ int AoC::day9_solution_part1(std::string_view input) {
 
     int result{};
 
-    for (const auto& line : lines) {
+    for (const auto &line : lines) {
         Sequence seq = Utils::parse_list<int>(line);
         SequenceTree tree{seq};
-        result += tree.extrapolate();
+        result += tree.extrapolate_forward();
     }
 
     return result;
 }
 
-std::size_t AoC::day9_solution_part2(std::string_view input) { return 0; }
+int AoC::day9_solution_part2(std::string_view input) {
+    const auto lines = Utils::String::split(input, '\n');
+
+    int result{};
+
+    for (const auto &line : lines) {
+        Sequence seq = Utils::parse_list<int>(line);
+        SequenceTree tree{seq};
+        result += tree.extrapolate_backward();
+    }
+
+    return result;
+}
