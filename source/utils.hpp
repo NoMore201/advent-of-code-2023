@@ -54,25 +54,12 @@ std::optional<ParseResult<T>> try_parse_number(std::string_view str) {
 
 template <typename I>
     requires std::integral<I>
-I parse_integer(std::basic_string_view<char>::const_iterator begin,
-                std::basic_string_view<char>::const_iterator end) {
-    auto parse_result = try_parse_number<I>(std::string_view{begin, end});
+I parse_integer(std::string_view str) {
+    auto parse_result = try_parse_number<I>(str);
     if (!parse_result) {
         throw std::runtime_error("Error while parsing value from string");
     }
     return (*parse_result).final_number;
-}
-
-template <typename I>
-    requires std::integral<I>
-I parse_integer(std::string_view str) {
-    return parse_integer<I>(str.begin(), str.end());
-}
-
-template <typename I>
-    requires std::integral<I>
-I parse_integer(std::basic_string<char>::const_iterator begin, std::basic_string<char>::const_iterator end) {
-    return parse_integer<I>(std::string_view{begin, end});
 }
 
 /**

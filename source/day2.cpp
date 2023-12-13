@@ -47,7 +47,7 @@ public:
                 if (next_space_it == line.end()) {
                     throw std::runtime_error("Malformed input string");
                 }
-                const auto color_quantity = Utils::parse_integer<int>(it, next_space_it);
+                const auto color_quantity = Utils::parse_integer<int>(std::string_view{it, next_space_it});
                 // parse color
                 it = next_space_it + 1;
                 auto color = parse_color_from_string(it, line.end());

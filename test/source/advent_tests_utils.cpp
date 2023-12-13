@@ -30,11 +30,9 @@ TEST(Utils, FindCommonItems) {
 }
 
 TEST(Utils, ParseInteger) {
-    constexpr std::string_view input_int{"4096"};
-    int parsed_number = Utils::parse_integer<int>(input_int);
+    constexpr std::string_view input_int{" 4096"};
+    int const parsed_number = Utils::parse_integer<int>(input_int);
     EXPECT_EQ(parsed_number, 4096);
-    parsed_number = Utils::parse_integer<int>(input_int.begin(), input_int.end());
-    EXPECT_EQ(parsed_number, 4096);
-    constexpr std::string_view invalid_input{"fake12mixed34"};
+    std::string const invalid_input{"fake12mixed34"};
     EXPECT_ANY_THROW(Utils::parse_integer<int>(invalid_input));
 }
