@@ -42,7 +42,7 @@ template <typename T>
 std::optional<ParseResult<T>> try_parse_number(std::string_view str) {
     T final_number{};
     const auto *begin = str.data();
-    const auto *end = &*str.end();
+    const auto *end = begin + str.size(); // NOLINT
     auto parse_result = std::from_chars(begin, end, final_number);
     if (parse_result.ec == std::errc()) {
         const auto pointer_offset = std::distance(begin, parse_result.ptr);
