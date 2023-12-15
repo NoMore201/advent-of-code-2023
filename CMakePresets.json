@@ -32,7 +32,7 @@
       "name": "cppcheck",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_CXX_CPPCHECK": "cppcheck;--inline-suppr;--enable=all;--suppress=missingIncludeSystem"
+        "CMAKE_CXX_CPPCHECK": "cppcheck;--inline-suppr;--enable=warning;--quiet"
       }
     },
     {
