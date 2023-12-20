@@ -21,7 +21,7 @@ constexpr char east_to_south = 'F';
 constexpr char ground = '.';
 constexpr char starting_symbol = 'S';
 
-enum class Direction : std::uint8_t { North, West, South, East };
+enum class Direction : unsigned char { North, West, South, East };
 
 using Record = std::tuple<Direction, char>;
 using History = std::vector<Record>;
@@ -64,7 +64,7 @@ public:
         m_max_columns = m_tile_map.at(0).size();
     }
 
-    const char &at(Size row, Size column) const { return m_tile_map.at(row).at(column); };
+    const char &at(Size row, Size column) const { return m_tile_map.at(row).at(column); }
 
     Size max_rows() const noexcept { return m_max_rows; }
     Size max_columns() const noexcept { return m_max_columns; }
